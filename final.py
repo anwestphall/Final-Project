@@ -5,45 +5,54 @@ from fpdf import FPDF
 
 
 def pdf_setup(d_list):
-    
+    """Create PDF."""
     pdf = FPDF()
     pdf.add_page()
     font = input("pick a font (Arial, courier, times): ")
-    font_size = int(input("pick a font size(1-20): "))
+    while True:
+        font_size = input("pick a font size(1-20): ")
+        try:
+            font_size = int(font_size)
+            break
+        except:
+            print("not a number")
+            continue
+
     text_color1 = input("pick a color(red, green, blue): ")
     text_color2 = input("pick a color(red, green, blue): ")
     if text_color1 == "red":
-        pdf.set_text_color(255,0,0)
+        pdf.set_text_color(255, 0, 0)
     if text_color1 == "green":
-        pdf.set_text_color(0,200,55)
+        pdf.set_text_color(0, 200, 55)
     if text_color1 == "blue":
-        pdf.set_text_color(0,0,255)
-    pdf.set_font(f"{font}", size= font_size)
-    pdf.cell(200, 10, txt = "Planting Calendar!", ln= 1, align="C")
-    pdf.cell(200, 10, txt = "  ", ln= 1, align="C")
-    pdf.cell(200, 10, txt = "Plant | Date to plant", ln = 1, align = "C")
-    pdf.cell(200, 10, txt = "  ", ln= 1, align="C")
+        pdf.set_text_color(0, 0, 255)
+    pdf.set_font(f"{font}", size=font_size)
+    pdf.cell(200, 10, txt="Planting Calendar!", ln=1, align="C")
+    pdf.cell(200, 10, txt="  ", ln=1, align="C")
+    pdf.cell(200, 10, txt="Plant | Date to plant", ln=1, align="C")
+    pdf.cell(200, 10, txt="  ", ln=1, align="C")
     counter = 0
     for i in d_list:
         i = str(i)
         i = i.replace("'", "").replace("]", "").replace("[", "")
-        i = i.replace("mar", "March").replace("apr", "April").replace("may", "May").replace("feb", "Februrary")
+        i = i.replace("mar", "March").replace("apr", "April").replace("may",
+        "May").replace("feb", "Februrary")
         i = i.replace(" ", "\t")
-        if counter %2 == 0:
+        if counter % 2 == 0:
             if text_color2 == "red":
-                pdf.set_text_color(255,0,0)
+                pdf.set_text_color(255, 0, 0)
             if text_color2 == "green":
-                pdf.set_text_color(0,200,55)
+                pdf.set_text_color(0, 200, 55)
             if text_color2 == "blue":
-                pdf.set_text_color(0,0,255)
-        if counter %2 != 0:
+                pdf.set_text_color(0, 0, 255)
+        if counter % 2 != 0:
             if text_color1 == "red":
-                pdf.set_text_color(255,0,0)
+                pdf.set_text_color(255, 0, 0)
             if text_color1 == "green":
-                pdf.set_text_color(0,200,55)
+                pdf.set_text_color(0, 200, 55)
             if text_color1 == "blue":
-                pdf.set_text_color(0,0,255)
-        pdf.cell(200, 10, txt= f"{i}", ln=20, align= "C")
+                pdf.set_text_color(0, 0, 255)
+        pdf.cell(200, 10, txt=f"{i}", ln=20, align="C")
         counter += 1
         print(i)
 
@@ -51,6 +60,7 @@ def pdf_setup(d_list):
 
 
 def get_veges(str3):
+    """Obtain vegetables, create list."""
     desired_list = []
     print("Pick your vegetables(beans, beets, bell peppers,\
  broccoli, brussels sprouts, cabbage, cantaloupes, carrots,\
@@ -69,26 +79,18 @@ def get_veges(str3):
     return desired_list
 
 
-
 def main():
-  with open("calendar.txt", "r") as fin:
-    list_1 = []
-    for line in fin:
-        list_1.append(line)
-    string_1 = str(list_1)
-    string_2 = string_1.replace('\\t', " ").replace('\\n', "").replace("]", "").replace("'", "").replace("[", "")
-    string_3 = string_2.split(",")
-    d_list = get_veges(string_3)
-    pdf_setup(d_list)
-
-
-
-
-
-
-    
-
-
+    """Use other functions to bring everything together."""
+    with open("calendar.txt", "r") as fin:
+        list_1 = []
+        for line in fin:
+            list_1.append(line)
+        string_1 = str(list_1)
+        string_2 = string_1.replace('\\t', " ").replace('\\n', "").replace("]",
+        "").replace("'", "").replace("[", "")
+        string_3 = string_2.split(",")
+        d_list = get_veges(string_3)
+        pdf_setup(d_list)
 
 
 if __name__ == "__main__":
